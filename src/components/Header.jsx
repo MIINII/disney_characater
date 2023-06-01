@@ -1,16 +1,27 @@
 import styled, { keyframes } from 'styled-components';
 import { ReactComponent as Logo } from '../img/Disney_wordmark.svg';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useEffect } from 'react';
 
 export default function Header() {
   const [stars, setStars] = useState([]);
+  const [maxSize, setMaxSize] = useState(Math.max(window.innerWidth, window.innerHeight));
 
-  const maxSize = Math.max(window.innerWidth, window.innerHeight);
-
-  const getRandomX = () => Math.random() * maxSize;
-  const getRandomY = () => Math.random() * maxSize;
+  const getRandomX = useMemo(() => () => Math.random() * maxSize, [maxSize]);
+  const getRandomY = useMemo(() => () => Math.random() * maxSize, [maxSize]);
   const randomRadius = () => Math.random() * 0.7 + 0.6;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxSize(Math.max(window.innerWidth, window.innerHeight));
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const _size = Math.floor(maxSize / 2);
@@ -20,7 +31,7 @@ export default function Header() {
       radius: randomRadius(),
     }));
     setStars(newStars);
-  }, []);
+  }, [maxSize, getRandomX, getRandomY]);
 
   return (
     <CharHeader>
@@ -30,10 +41,12 @@ export default function Header() {
         <h1
           style={{
             textAlign: 'center',
-            fontWeight: '400',
+            fontSize: '18px',
+            fontWeight: '600',
             letterSpacing: '6px',
             textTransform: 'uppercase',
             paddingLeft: '6px',
+            zIndex: '100',
           }}
         >
           Disney Characters
@@ -53,7 +66,9 @@ const CharHeader = styled.header`
   flex-direction: column;
   align-items: center;
   position: sticky;
+  z-index: 100;
   top: 0;
+  width: 100%;
   overflow: hidden;
 `;
 
@@ -67,7 +82,7 @@ const BackSky = styled.div`
   width: 100vw;
   height: auto;
   background: linear-gradient(to right, #08153b, #0f1128);
-  opacity: .9;
+  opacity: 0.9;
   backdrop-filter: blur(3px);
   overflow: hidden;
 `;
@@ -89,6 +104,7 @@ const StarSvg = styled.svg`
   left: 50%;
   transform: translate(-50%, -50%);
   animation: ${moveStar} 200s linear infinite;
+  overflow: hidden;
 `;
 
 const Star = styled.circle`
