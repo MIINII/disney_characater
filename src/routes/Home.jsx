@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 export default function Home() {
   const { isLoading, data } = useQuery('allChar', fetchChar);
-  console.log('🚀 ⁝ Home ⁝ data:', data);
 
   return (
     <>
@@ -13,7 +12,7 @@ export default function Home() {
       ) : (
         <CharList>
           {data.slice(0, 100).map((character) => (
-            <CharWrap>
+            <CharWrap key={character.id}>
               <CharImg src={`${character.imageUrl}`} />
               <CharName>{character.name}</CharName>
             </CharWrap>

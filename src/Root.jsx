@@ -65,7 +65,7 @@ footer, header, hgroup, main, menu, nav, section {
 body {
   line-height: 1;
   font-family: 'Pretendard', sans-serif;
-  background-color: #2a2c33;
+  background-color: #08153b;
   color:#fff
 }
 menu, ol, ul {
