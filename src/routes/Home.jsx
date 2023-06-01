@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import { fetchChar } from './../api';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const { isLoading, data } = useQuery('allChar', fetchChar);
@@ -12,10 +13,14 @@ export default function Home() {
       ) : (
         <CharList>
           {data.slice(0, 100).map((character) => (
-            <CharWrap key={character.id}>
-              <CharImg src={`${character.imageUrl}`} />
-              <CharName>{character.name}</CharName>
-            </CharWrap>
+            <div key={character.id}>
+              <Link to={`/character/${character.id}`}>
+                <CharWrap>
+                  <CharImg src={`${character.imageUrl}`} />
+                  <CharName>{character.name}</CharName>
+                </CharWrap>
+              </Link>
+            </div>
           ))}
         </CharList>
       )}
@@ -35,6 +40,8 @@ const CharList = styled.div`
   flex-wrap: wrap;
   width: 70%;
   scroll-snap-type-y: mandatory;
+  scroll-snap-align: start;
+  gap: 20px;
 `;
 
 const CharWrap = styled.main`
@@ -43,16 +50,36 @@ const CharWrap = styled.main`
   align-items: center;
   justify-content: center;
   width: 300px;
-  padding: 0 20px;
+  height: 300px;
+
+  border-radius: 30px;
+  transition: all 0.3s ease-in-out 0s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+
+    /* transition: all 0.3s ease-in-out 0s; */
+  }
 `;
 
 const CharImg = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   border-radius: 100%;
 `;
 
 const CharName = styled.h2`
-  font-size: 18px;
+  @import url('https://fonts.cdnfonts.com/css/new-walt-disney-font');
+  @font-face {
+    font-family: 'New Walt Disney Font';
+    font-style: normal;
+    font-weight: 400;
+    src: local('New Walt Disney Font'),
+      url('https://fonts.cdnfonts.com/s/36368/New Walt Disney.woff') format('woff');
+  }
+  font-family: 'New Walt Disney Font', sans-serif;
+  font-size: 32px;
   padding: 18px 0;
+  text-align: center;
 `;

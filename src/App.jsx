@@ -1,14 +1,14 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { Outlet } from 'react-router';
+import Router from './routes/Router';
 import Header from './components/Header';
 
-function Root() {
+function App() {
   return (
     <div className='Root'>
       <GlobalStyle />
       <Wrapper>
         <Header />
-        <Outlet />
+        <Router />
       </Wrapper>
     </div>
   );
@@ -17,7 +17,6 @@ function Root() {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   justify-content: center;
   align-items: center;
 `;
@@ -89,4 +88,4 @@ a{
 }
 `;
 
-export default Root;
+export default App;
