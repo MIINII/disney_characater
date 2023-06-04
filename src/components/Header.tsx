@@ -1,10 +1,18 @@
 import styled, { keyframes } from 'styled-components';
-import { ReactComponent as Logo } from '../img/Disney_wordmark.svg';
 import { useMemo, useState } from 'react';
 import { useEffect } from 'react';
+import { ReactComponent as Logo } from '../img/DisneyWordmark.svg';
+
+
+
+interface Star {
+  x: number;
+  y: number;
+  radius: number;
+}
 
 export default function Header() {
-  const [stars, setStars] = useState([]);
+  const [stars, setStars] = useState<Star[]>([]);
   const [maxSize, setMaxSize] = useState(Math.max(window.innerWidth, window.innerHeight));
 
   const getRandomX = useMemo(() => () => Math.random() * maxSize, [maxSize]);
@@ -25,7 +33,7 @@ export default function Header() {
 
   useEffect(() => {
     const _size = Math.floor(maxSize / 2);
-    const newStars = new Array(_size).fill().map((_, i) => ({
+    const newStars: Star[] = new Array(_size).fill(0).map((_, i) => ({
       x: getRandomX(),
       y: getRandomY(),
       radius: randomRadius(),
@@ -36,7 +44,7 @@ export default function Header() {
   return (
     <CharHeader>
       <BackSky>
-        <Logo fill='white' width='300px' height='150px' style={{ padding: '10px 0' }} />
+        <Logo fill='white' width='300px' height='130px' style={{ padding: '10px 0' }} />
 
         <h1
           style={{
@@ -81,7 +89,7 @@ const BackSky = styled.div`
   padding: 26px 0;
   width: 100vw;
   height: auto;
-  background: linear-gradient(to right, #08153b, #0f1128);
+  background: linear-gradient(to bottom, #0d1c48, #0f1128);
   opacity: 0.9;
   backdrop-filter: blur(3px);
   overflow: hidden;

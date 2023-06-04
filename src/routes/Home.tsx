@@ -1,10 +1,13 @@
 import { useQuery } from 'react-query';
-import { fetchChar } from './../api';
+import { fetchChar } from '../api';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+interface IChars {}
+
 export default function Home() {
   const { isLoading, data } = useQuery('allChar', fetchChar);
+  console.log('🚀 ⁝ Home ⁝ data:', data);
 
   return (
     <>
@@ -12,7 +15,7 @@ export default function Home() {
         <Loader>로딩중...</Loader>
       ) : (
         <CharList>
-          {data.slice(0, 100).map((character) => (
+          {/* {data.slice(0, 100).map((character) => (
             <div key={character.id}>
               <Link to={`/character/${character.id}`}>
                 <CharWrap>
@@ -21,7 +24,7 @@ export default function Home() {
                 </CharWrap>
               </Link>
             </div>
-          ))}
+          ))} */}
         </CharList>
       )}
     </>
