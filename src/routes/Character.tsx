@@ -11,55 +11,6 @@ interface IChar {
   sourceUrl: string;
 }
 
-export default function Character() {
-  const { id } = useParams();
-  const { isLoading: detailLoading, data: detailData } = useQuery<IChar>(['detail', id], () =>
-    fetchCharDetail(id!)
-  );
-
-  return (
-    <>
-      {detailLoading ? (
-        <span>로딩중</span>
-      ) : (
-        <Wrap>
-          {/* <PreChar>{(data.id - 1)}</PreChar> */}
-          <MainChar>
-            <ImgWrap>
-              <CharImg src={`${detailData?.imageUrl}`} />
-            </ImgWrap>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: '32px',
-              }}
-            >
-              <CharName>{detailData?.name}</CharName>
-
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <ul
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '10px',
-                    marginTop: '20px',
-                  }}
-                >
-                  {detailData?.films.map((film: string) => (
-                    <CharDesc>{film}</CharDesc>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </MainChar>
-        </Wrap>
-      )}
-    </>
-  );
-}
-
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -96,7 +47,7 @@ const ImgWrap = styled.div`
 `;
 
 const CharName = styled.h3`
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 700;
 `;
 
@@ -104,6 +55,84 @@ const CharDesc = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 6px 0;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: underline;
 `;
+
+export default function Character() {
+  const { id } = useParams();
+  const { isLoading: detailLoading, data: detailData } = useQuery<IChar>(['detail', id], () =>
+    fetchCharDetail(id!)
+  );
+
+  return (
+    <>
+      {detailLoading ? (
+        <span>로딩중</span>
+      ) : (
+        <Wrap>
+          {/* <PreChar>{(data.id - 1)}</PreChar> */}
+          <MainChar>
+            <ImgWrap>
+              <CharImg src={`${detailData?.imageUrl}`} />
+            </ImgWrap>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: '32px',
+              }}
+            >
+              <CharName>{detailData?.name}</CharName>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '70vw',
+                  marginTop: '32px',
+                  padding: '30px',
+                  gap: '10px',
+                  background: 'rgba(0,0,0,.3)',
+                }}
+              >
+                <h4
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: '600',
+                    marginBottom: '12px',
+                    background: 'white',
+                    padding: '12px 18px',
+                    color: '#1b2c8b',
+                    borderRadius: '30px',
+                  }}
+                >
+                  🎬Films🎥
+                </h4>
+
+                <ul
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    marginTop: '12px',
+                  }}
+                >
+                  {detailData?.films.map((film: string) => (
+                    <CharDesc>{film}</CharDesc>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </MainChar>
+        </Wrap>
+      )}
+    </>
+  );
+}

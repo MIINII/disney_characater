@@ -3,32 +3,10 @@ import { fetchChar } from '../api';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-interface IChars {}
-
-export default function Home() {
-  const { isLoading, data } = useQuery('allChar', fetchChar);
-  console.log('🚀 ⁝ Home ⁝ data:', data);
-
-  return (
-    <>
-      {isLoading ? (
-        <Loader>로딩중...</Loader>
-      ) : (
-        <CharList>
-          {/* {data.slice(0, 100).map((character) => (
-            <div key={character.id}>
-              <Link to={`/character/${character.id}`}>
-                <CharWrap>
-                  <CharImg src={`${character.imageUrl}`} />
-                  <CharName>{character.name}</CharName>
-                </CharWrap>
-              </Link>
-            </div>
-          ))} */}
-        </CharList>
-      )}
-    </>
-  );
+interface IChars {
+  id: number;
+  name: string;
+  imageUrl: string;
 }
 
 const Loader = styled.h2`
@@ -41,10 +19,18 @@ const CharList = styled.div`
   align-items: flex-start;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  height: 70vh;
   width: 70%;
+  position: absolute;
+  top: 24%;
+  z-index: 1000;
   scroll-snap-type-y: mandatory;
   scroll-snap-align: start;
   gap: 20px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CharWrap = styled.main`
@@ -86,3 +72,28 @@ const CharName = styled.h2`
   padding: 18px 0;
   text-align: center;
 `;
+
+export default function Home() {
+  const { isLoading, data } = useQuery('allChar', fetchChar);
+
+  return (
+    <>
+      {isLoading ? (
+        <Loader>로딩중...</Loader>
+      ) : (
+        <CharList>
+          {data.slice(0, 100).map((character: IChars) => (
+            <div key={character.id}>
+              <Link to={`/character/${character.id}`}>
+                <CharWrap>
+                  <CharImg src={`${character.imageUrl}`} />
+                  <CharName>{character.name}</CharName>
+                </CharWrap>
+              </Link>
+            </div>
+          ))}
+        </CharList>
+      )}
+    </>
+  );
+}
