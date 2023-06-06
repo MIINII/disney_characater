@@ -1,25 +1,52 @@
+import { useEffect, useRef } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Router from './routes/Router';
 import Header from './components/Header';
-
-function App() {
-  return (
-    <div className='Root'>
-      <GlobalStyle />
-      <Wrapper>
-        <Header />
-        <Router />
-      </Wrapper>
-    </div>
-  );
-}
+import * as klouds from 'klouds';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 `;
+
+const Kloud = styled.canvas`
+  display: flex;
+  position: relative;
+  height: 50%;
+  z-index: -100;
+  overflow: hidden;
+  opacity: 0.6;
+`;
+
+function App() {
+  const myCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    if (myCanvasRef.current) {
+      klouds.create({
+        selector: myCanvasRef.current,
+        layerCount: 4,
+        bgColor: [15, 17, 40],
+        cloudColor1: [13, 20, 45],
+        cloudColor2: [30, 46, 97],
+      });
+    }
+  }, []);
+
+  return (
+    <div className='Root'>
+      <GlobalStyle />
+      <Wrapper>
+        <Router />
+        <Header />
+        <Kloud ref={myCanvasRef} />
+      </Wrapper>
+    </div>
+  );
+}
 
 const GlobalStyle = createGlobalStyle`
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css");
